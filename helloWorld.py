@@ -12,7 +12,9 @@ def get_user(id):
            return user
       return ({})
    elif id and request.method == 'DELETE':
-       pass
+       for user in users['users_list']:
+           if user['id'] == id:
+               users.popitem(user)
    return users
 
 users = { 
