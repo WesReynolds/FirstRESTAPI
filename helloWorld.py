@@ -4,13 +4,15 @@ from flask import jsonify
 
 app = Flask(__name__)
 
-@app.route('/users/<id>')
+@app.route('/users/<id>', methods=['GET', 'DELETE'])
 def get_user(id):
-   if id :
+   if id and request.method == 'GET':
       for user in users['users_list']:
         if user['id'] == id:
            return user
       return ({})
+   elif id and request.method == 'DELETE':
+       pass
    return users
 
 users = { 
@@ -43,6 +45,19 @@ users = {
       }
    ]
 }
+
+@app.route('/userJobs')
+def get_userJobs():
+    search_job = request.args.get('job')
+    search_name = request.args.get('name')
+
+    if search_job and search_name:
+        subdict = {'users_list': []}
+        for user in users['users_list']:
+            if user['job'] == search_job and user['name'] == search_name:
+                subdict['users_list'].append(user)
+        return subdict
+    return users
 
 @app.route('/users', methods=['GET', 'POST'])
 def get_users():
