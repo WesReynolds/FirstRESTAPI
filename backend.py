@@ -76,11 +76,23 @@ def get_users():
       return users
    elif request.method == 'POST':
       userToAdd = request.get_json()
+      userToAdd['id'] = generateID()
       users['users_list'].append(userToAdd)
       resp = jsonify(success=True)
-      #resp.status_code = 200 #optionally, you can always set a response code.
+      resp.status_code = 201 #optionally, you can always set a response code.
       # 200 is the default code for a normal response
       return resp
+
+
+def generateID():
+    id = ""
+
+    for i in range(3):
+       id += str(chr(random.randint(97,122))) # Characters a-z
+    for j in range(3):
+       id += str(random.randint(0,9))
+    
+    return id
 
 @app.route('/')
 def hello_world():
